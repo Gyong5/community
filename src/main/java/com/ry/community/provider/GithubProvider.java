@@ -44,8 +44,6 @@ public class GithubProvider {
                 .header("Authorization","token "+accessToken)
                 .build();
         try(Response response = client.newCall(request).execute()){
-            System.out.println(response.body().string());
-
             GithubUser githubUser = JSON.parseObject(response.body().string(), GithubUser.class);
 
             return githubUser;

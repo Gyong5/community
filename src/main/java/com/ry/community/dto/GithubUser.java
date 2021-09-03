@@ -1,11 +1,14 @@
 package com.ry.community.dto;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 /**
  * @author ry
  * @since 2021-09-02 10:07
  **/
 public class GithubUser {
     private Long id;
+    @JSONField(name = "login")
     private String name;
     private String bio;
 

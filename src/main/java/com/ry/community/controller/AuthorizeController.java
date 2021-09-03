@@ -2,6 +2,8 @@ package com.ry.community.controller;
 
 import com.ry.community.dto.AccessTokenDTO;
 import com.ry.community.dto.GithubUser;
+import com.ry.community.mapper.UserMapper;
+import com.ry.community.model.User;
 import com.ry.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -27,26 +33,38 @@ public class AuthorizeController {
     @Value("${AccessToken.redirect_uri}")
     private String redirectUri;
 
-
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
+    @Autowired
+    private UserMapper userMapper;
 
     @GetMapping("/callback")
     public String callback(@RequestParam("code") String code,
-                           @RequestParam("state") String state){
+                           @RequestParam("state") String state,
+                           HttpSession session){
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
         accessTokenDTO.setClient_id(clientId);
         accessTokenDTO.setClient_secret(clientSecret);
         accessTokenDTO.setRedirect_uri(redirectUri);
-        System.out.println(accessTokenDTO);
-
 
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
         if (user!= null){
             Logger.getGlobal().info(user.toString());
-        }
+            session.setAttribute("user",user);
+            User modelUser = new User();
+            modelUser.setAccountId(String.valueOf(user.getId()));
+            modelUser.setName(user.getName());
+            modelUser.setToken(UUID.randomUUID().toString());
+            modelUser.setGmtCreate(System.currentTimeMillis());
+            modelUser.setGmtModify(modelUser.getGmtCreate());
 
-        return "index";
+            userMapper.insert(modelUser);
+
+            return "redirect:/";
+        }else{
+            return "redirect:/";
+        }
     }
 }
