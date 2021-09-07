@@ -39,6 +39,8 @@ public class AuthorizeController {
     @Autowired
     private UserMapper userMapper;
 
+    private Logger logger = Logger.getLogger("com.ry.community.controller.AuthorizeController");
+
     @GetMapping("/callback")
     public String callback(@RequestParam("code") String code,
                            @RequestParam("state") String state,
@@ -54,7 +56,7 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser user = githubProvider.getUser(accessToken);
         if (user!= null){
-            Logger.getGlobal().info(user.toString());
+            logger.info(user.toString());
             User modelUser = new User();
             String token = UUID.randomUUID().toString();
             modelUser.setAccountId(String.valueOf(user.getId()));
@@ -62,11 +64,11 @@ public class AuthorizeController {
             modelUser.setToken(token);
             modelUser.setGmtCreate(System.currentTimeMillis());
             modelUser.setGmtModify(modelUser.getGmtCreate());
+            modelUser.setAvatarUrl(user.getAvatarUrl());
+            logger.info("modelUser"+modelUser);
 
             //插入到数据库中
             userMapper.insert(modelUser);
-
-            //session.setAttribute("user",user);
 
             //将token加到cookie中
             response.addCookie(new Cookie("token",token));

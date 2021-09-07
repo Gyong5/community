@@ -49,19 +49,20 @@
         <div class="row">
             <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" >
                 <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> 发布</h2><hr>
-                <form>
+                <form th:action="@{/publish}" method="post">
                     <div class="form-group">
                         <label for="title">问题标题（简单扼要）：</label>
-                        <input type="text" class="form-control" id="title" placeholder="请输入标题....." name="title">
+                        <input type="text" class="form-control" id="title" placeholder="请输入标题....." name="title" th:value="${title}">
                     </div>
                     <div class="form-group">
-                        <label for="title">问题补充（必填，请参照右侧提示）：</label>
-                        <textarea class="form-control" id="description" name="description" rows="10"></textarea>
+                        <label for="description">问题补充（必填，请参照右侧提示）：</label>
+                        <textarea class="form-control" id="description" name="description" rows="10" th:value="${description}"></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="title">添加标签：</label>
-                        <input type="text" class="form-control" id="tag" placeholder="请输入标签，以,分隔多个标签" name="tag">
+                        <label for="tag">添加标签：</label>
+                        <input type="text" class="form-control" id="tag" placeholder="请输入标签，以,分隔多个标签" name="tag" th:value="${tag}">
                     </div>
+                    <span class="alert alert-danger" th:text="${error}" th:if="${error != null}"></span>
                     <button type="submit" class="btn btn-success btn-publish">发布</button>
                 </form>
             </div>

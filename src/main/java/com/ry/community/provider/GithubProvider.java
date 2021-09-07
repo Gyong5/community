@@ -14,6 +14,8 @@ import java.util.logging.Logger;
  **/
 @Component
 public class GithubProvider {
+    Logger logger = Logger.getLogger("com.ry.community.provider.GithubProvider");
+
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
         MediaType mediaType = MediaType.get("application/json;charset=utf8");
         OkHttpClient client = new OkHttpClient();
@@ -26,7 +28,7 @@ public class GithubProvider {
         try(Response response = client.newCall(request).execute()){
             String str = response.body().string();
             String accessToken = str.split("&")[0].split("=")[1];
-            Logger.getGlobal().info(accessToken);
+            logger.info(accessToken);
 
 
             return accessToken;

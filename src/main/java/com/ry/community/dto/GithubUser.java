@@ -11,6 +11,16 @@ public class GithubUser {
     @JSONField(name = "login")
     private String name;
     private String bio;
+    @JSONField(name = "avatar_url")
+    private String avatarUrl;
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
 
     public Long getId() {
         return id;
@@ -42,6 +52,7 @@ public class GithubUser {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", bio='" + bio + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }

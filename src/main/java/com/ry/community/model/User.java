@@ -11,6 +11,15 @@ public class User {
     private String token;
     private Long gmtCreate;
     private Long gmtModify;
+    private String avatarUrl;
+
+    public String getAvatarUrl() {
+        return avatarUrl;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatarUrl = avatarUrl;
+    }
 
     public Integer getId() {
         return id;
@@ -62,15 +71,15 @@ public class User {
     }
 
     @Override
-    public String
-    toString() {
+    public String toString() {
         return "User{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", AccountId=" + AccountId +
+                ", AccountId='" + AccountId + '\'' +
                 ", token='" + token + '\'' +
                 ", gmtCreate=" + gmtCreate +
                 ", gmtModify=" + gmtModify +
+                ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
 }
